@@ -1,0 +1,4 @@
+*.swp
+locale/
+*.pyc
+venv/
