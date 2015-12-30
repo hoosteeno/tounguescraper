@@ -24,11 +24,17 @@ class ToungueScraper(scrapy.Spider):
     def write_pofile(self, f, phrases):
         pofile = polib.pofile(f)
         for msgi, msgs in phrases.iteritems():
-            entry = polib.POEntry(
-                msgid = msgi,
-                msgstr = msgs
-            )
-            pofile.append(entry)
+            existing = pofile.find(msgi)
+            if existing:
+                existing.msgid = msgi
+                existing.msgstr = msgs
+            else:
+                entry = polib.POEntry(
+                    msgid = msgi,
+                    msgstr = msgs
+                )
+                pofile.append(entry)
+
         pofile.save(f)
 
     # When the spider closes, process all the l10n strings it got
